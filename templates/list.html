@@ -1,0 +1,64 @@
+{% extends 'base_detail_list.html' %}
+
+{% block main_content %}
+
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">新鲜水果</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					<li>
+						<a href="#"><img src="../static/images/goods/goods001.jpg"></a>
+						<h4><a href="#">进口柠檬</a></h4>
+						<div class="prize">￥3.90</div>
+					</li>
+					<li>
+						<a href="#"><img src="../static/images/goods/goods002.jpg"></a>
+						<h4><a href="#">玫瑰香葡萄</a></h4>
+						<div class="prize">￥16.80</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="{% url 'goods:list' goods_type.id 1 %}?sort=default" class="active">默认</a>
+				<a href="{% url 'goods:list' goods_type.id 1 %}?sort=price">价格</a>
+				<a href="{% url 'goods:list' goods_type.id 1 %}?sort=hot">人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+                {% for sku_good in page_con %}
+				<li>
+					<a href="detail.html"><img src="{{ sku_good.image.url }}"></a>
+					<h4><a href="detail.html">{{ sku_good.name }}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{ sku_good.price }}</span>
+						<span class="unit">{{ sku_good.price }}/{{ sku_good.unite }}</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+                {% endfor %}
+            </ul>
+
+			<div class="pagenation">
+                {% if page_con.has_previous %}
+				<a href="{% url 'goods:list' goods_type.id page_con.previous_page_number %}?sort={{ sort }}">上一页</a>
+                {% endif %}
+                {% for num in pages %}
+				<a href="{% url 'goods:list' goods_type.id num %}?sort={{ sort }}" {% if num == page_con.number %}class="active"{% endif %}> {{ num }}</a>
+                {% endfor %}
+                {% if page_con.has_next %}
+				<a href="{% url 'goods:list' goods_type.id page_con.next_page_number %}?sort={{ sort }}">下一页></a>
+                {% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock main_content%}
